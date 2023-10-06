@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: const Menu(),
+      bottomNavigationBar: const _BottomBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -29,32 +30,7 @@ class HomePage extends StatelessWidget {
               const _Banner(),
               SizedBox(height: Sizing.hp(1)),
               const _TabBarSelector(),
-              GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: Sizing.wp(7),
-                mainAxisSpacing: Sizing.hp(2),
-                childAspectRatio: 1.2,
-                children: [
-                  _GridItem(
-                    label: 'Limón sin semilla',
-                    image: 'assets/PNG/frutas y verduras.png',
-                  ),
-                  _GridItem(
-                    label: 'Platano',
-                    image: 'assets/PNG/carnes.png',
-                  ),
-                  _GridItem(
-                    label: 'Granada roja',
-                    image: 'assets/PNG/abarrotes.png',
-                  ),
-                  _GridItem(
-                    label: 'Naranja',
-                    image: 'assets/PNG/lacteos.png',
-                  ),
-                ],
-              ),
+              const _ItemsGrid(),
             ],
           ),
         ),
@@ -63,11 +39,133 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        child: BottomNavigationBar(
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          items: [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/SVG/home.svg',
+                width: 15,
+                height: 15,
+              ),
+              label: 'Inicio',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/SVG/Ofertas.svg',
+                width: 15,
+                height: 15,
+              ),
+              label: 'Descuentos',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/SVG/icono carrito.svg',
+                width: 15,
+                height: 15,
+              ),
+              label: 'Carrito',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/SVG/corazon.svg',
+                width: 15,
+                height: 15,
+              ),
+              label: 'Wishlist',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/SVG/usuario.svg',
+                width: 15,
+                height: 15,
+              ),
+              label: 'Mi Cuenta',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ItemsGrid extends StatelessWidget {
+  const _ItemsGrid({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      crossAxisSpacing: Sizing.wp(7),
+      mainAxisSpacing: Sizing.hp(2),
+      childAspectRatio: 1.2,
+      children: const [
+        _GridItem(
+          label: 'Limón sin semilla',
+          price: 25.90,
+          image: 'assets/PNG/banner.png',
+        ),
+        _GridItem(
+          label: 'Platano',
+          price: 25.90,
+          image: 'assets/PNG/banner.png',
+        ),
+        _GridItem(
+          label: 'Granada roja',
+          price: 25.90,
+          image: 'assets/PNG/banner.png',
+        ),
+        _GridItem(
+          label: 'Naranja',
+          price: 25.90,
+          image: 'assets/PNG/banner.png',
+        ),
+      ],
+    );
+  }
+}
+
 class _GridItem extends StatefulWidget {
-  const _GridItem({super.key, required this.label, required this.image});
+  const _GridItem(
+      {super.key,
+      required this.label,
+      required this.image,
+      required this.price});
 
   final String label;
   final String image;
+  final double price;
 
   @override
   State<_GridItem> createState() => _GridItemState();
@@ -93,6 +191,127 @@ class _GridItemState extends State<_GridItem> {
         ),
         child: Stack(
           children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: double.infinity),
+                Center(
+                  child: Image.asset(
+                    widget.image,
+                    fit: BoxFit.contain,
+                    height: Sizing.hp(9),
+                    width: Sizing.wp(15),
+                  ),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: Sizing.wp(15),
+                        child: Text(
+                          widget.label,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '\$${widget.price}',
+                        style: const TextStyle(
+                          color: secondaryGreen,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        '1kg',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      // Add to cart button
+                      const Spacer(),
+                      if (count == 0)
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              count++;
+                            });
+                          },
+                          child: SvgPicture.asset('assets/SVG/icono mas.svg',
+                              height: 20),
+                        )
+                      else
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 2,
+                            vertical: 1,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: secondaryGreen,
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    count--;
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                    'assets/SVG/icono menos.svg',
+                                    height: 15),
+                              ),
+                              Text(
+                                '${count}kg',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    count++;
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                    'assets/SVG/icono mas.svg',
+                                    height: 15),
+                              ),
+                            ],
+                          ),
+                        )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
@@ -105,9 +324,6 @@ class _GridItemState extends State<_GridItem> {
                       ? SvgPicture.asset('assets/SVG/icono wishlist activo.svg')
                       : SvgPicture.asset('assets/SVG/icono wishlist.svg')),
             ),
-            Column(
-              children: [],
-            )
           ],
         ));
   }

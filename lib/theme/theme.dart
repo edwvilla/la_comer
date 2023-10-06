@@ -37,4 +37,14 @@ final theme = ThemeData.light().copyWith(
     fillColor: formFieldBackgroundColor,
     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: Colors.black,
+    unselectedItemColor: Colors.black,
+    selectedLabelStyle: TextStyle(
+      fontSize: 12,
+    ),
+    unselectedLabelStyle: TextStyle(
+      fontSize: 12,
+    )
+  ),
 );
